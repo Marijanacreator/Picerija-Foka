@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="#c06a4a"/>
+    <circle cx="50" cy="50" r="26" fill="#f2c14e"/>
+    <circle cx="42" cy="44" r="3.4" fill="#a83e2e"/>
+    <circle cx="58" cy="42" r="3.4" fill="#a83e2e"/>
+    <circle cx="54" cy="60" r="3.4" fill="#a83e2e"/>
+    <circle cx="40" cy="58" r="2.4" fill="#5a7a3a"/>
+  </svg>
+</template>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="image" href="assets/pizza/baked-round-sm.webp" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&amp;family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=Space+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: #b8862f; text-decoration: none; transition: color .3s ease; }
+  a:hover { color: #c06a4a; }
+  ::selection { background: #c06a4a; color: #fff; }
+  #hero-img::part(frame) { background: transparent; }
+  @keyframes floatP {
+    0%   { transform: translate(0,0) scale(1);   opacity: .5; }
+    50%  { transform: translate(14px,-26px) scale(1.25); opacity: .9; }
+    100% { transform: translate(0,0) scale(1);   opacity: .5; }
+  }
+  @keyframes emberRise {
+    0%   { transform: translateY(0) scale(.8);   opacity: 0; }
+    15%  { opacity: .8; }
+    100% { transform: translateY(-140px) scale(1.1); opacity: 0; }
+  }
+  @keyframes glowBreath {
+    0%,100% { transform: scale(1); }
+    50%     { transform: scale(1.08); }
+  }
+  @keyframes scrollDot {
+    0%   { transform: translateY(0); opacity: 0; }
+    30%  { opacity: 1; }
+    100% { transform: translateY(20px); opacity: 0; }
+  }
+  @keyframes fokaSpin { to { transform: rotate(360deg); } }
+  @keyframes fokaDots { 0%,100% { opacity:.25; transform:translateY(0); } 50% { opacity:1; transform:translateY(-3px); } }
+  @keyframes fokaSteam {
+    0%   { transform: translateY(8px) scaleY(.6); opacity: 0; }
+    30%  { opacity: .5; }
+    100% { transform: translateY(-24px) scaleY(1.1); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { #preloader *, #preloader { animation: none !important; } }
+  @keyframes fokaBoxLand {
+    0%   { transform: translate(-50%,-60%) scale(1.06); }
+    38%  { transform: translate(-50%,-84%) scale(1.08); }
+    70%  { transform: translate(-50%,-54%) scale(.99); }
+    100% { transform: translate(-50%,-60%) scale(1); }
+  }
+  @keyframes asmPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(192,106,74,0); }
+    50%     { box-shadow: 0 0 0 10px rgba(192,106,74,.10); }
+  }
+  /* ---- pizza configurator ---- */
+  .pc-card { display:flex; align-items:center; gap:16px; width:100%; text-align:left;
+    background:#fff; border:1.5px solid rgba(43,39,36,.07); border-radius:20px;
+    padding:13px 18px; cursor:pointer; position:relative; -webkit-appearance:none; appearance:none;
+    box-shadow:0 12px 30px -20px rgba(43,39,36,.45);
+    transition:transform .2s ease-out, box-shadow .2s ease-out, filter .2s ease-out, border-color .3s ease, opacity .4s ease; }
+  .pc-card:hover { transform:translateY(-5px); box-shadow:0 22px 42px -20px rgba(43,39,36,.5); filter:brightness(1.03); }
+  .pc-card:active { transform:scale(.98); }
+  .pc-card:focus-visible { outline:2px solid #e06e3a; outline-offset:3px; }
+  .pc-card[data-future="1"] { opacity:.4; pointer-events:none; }
+  .pc-card[data-done="1"] { pointer-events:none; border-color:#e06e3a;
+    box-shadow:0 0 0 1px #e06e3a, 0 14px 30px -20px rgba(224,110,58,.55); }
+  .pc-thumb { width:52px; height:52px; border-radius:50%; object-fit:contain; flex:0 0 auto;
+    background:#faf1e8; padding:4px; pointer-events:none; }
+  .pc-name { font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:1.06rem; flex:1;
+    color:#241f1c; pointer-events:none; }
+  .pc-check { width:26px; height:26px; border-radius:50%; border:1.5px solid rgba(43,39,36,.2);
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:.82rem;
+    flex:0 0 auto; background:transparent; transition:background .3s ease, border-color .3s ease, transform .3s ease;
+    transform:scale(.8); pointer-events:none; }
+  .pc-card[data-done="1"] .pc-check { background:#e06e3a; border-color:#e06e3a; transform:scale(1); }
+  .pc-tip { position:absolute; bottom:calc(100% + 10px); left:24px; white-space:nowrap;
+    font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.78rem; letter-spacing:.02em;
+    color:#faf7f2; background:#2b2724; padding:7px 13px; border-radius:999px; opacity:0;
+    pointer-events:none; transform:translateY(5px); transition:opacity .22s ease, transform .22s ease; z-index:6; }
+  .pc-tip::after { content:""; position:absolute; top:100%; left:22px; border:6px solid transparent; border-top-color:#2b2724; }
+  .pc-card:not([data-done="1"]):not([data-future="1"]):hover .pc-tip { opacity:1; transform:translateY(0); }
+  @media (max-width:820px) {
+    .pc-wrap { grid-template-columns:1fr !important; }
+    .pc-pizza-side { order:-1; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .pc-card { transition:border-color .3s ease; }
+    .pc-card:hover { transform:none; }
+  }
+
+  /* ============================================================
+     RESPONSIVE SYSTEM — consolidated. Overrides inline layout
+     tokens (needs !important to beat inline styles) so root
+     layout causes are fixed rather than clipped away.
+     ============================================================ */
+
+  /* 1. Kill the auto-fit minmax overflow at every width.
+     min(100%,X) lets a track shrink below X on narrow screens
+     instead of forcing horizontal scroll; identical to before
+     once the viewport is wide. */
+  #top,
+  #meni > div:last-child,
+  #kontakt > div:first-child { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)) !important; }
+
+  /* 2. Use the small-viewport unit so mobile browser chrome
+     doesn't create 100vh jumps / clipped pinned frames. */
+  #top { min-height: 100svh !important; }
+  #prica { min-height: 100svh !important; }
+  #pecenje > div,
+  #dostava > div { height: 100svh !important; }
+
+  /* 3. Nav: keep logo + Naruči comfortable; drop the phone
+     number when it would crowd the row; guarantee 44px targets. */
+  #nav a[href="#kontakt"] { min-height: 44px; display: inline-flex; align-items: center; }
+  #nav a:focus-visible { outline: 2px solid #e06e3a; outline-offset: 3px; border-radius: 999px; }
+
+  /* 4. Menu: two price columns only where they fit. */
+  .menu-cols { columns: 2; }
+  @media (max-width: 720px) { .menu-cols { columns: 1 !important; } }
+
+  /* 5. Priča controls: shrink so the row never overflows small phones. */
+  @media (max-width: 560px) {
+    #prica > div:last-child { gap: 14px !important; }
+    #prica [data-counter] { min-width: 0 !important; font-size: .68rem !important; }
+    #prica [data-prev], #prica [data-next] { width: 48px !important; height: 48px !important; }
+  }
+
+  /* 6. Hero: hide the floating scroll cue on phones (it overlaps
+     stacked content), tighten top offset under the fixed nav. */
+  @media (max-width: 700px) {
+    #top { padding-top: 104px !important; padding-bottom: 56px !important; }
+    #top > div:nth-child(3) { display: none !important; }
+  }
+
+  /* 7. Delivery: size endpoint icons so they can't clip at the
+     path ends on narrow screens; keep the box readable. */
+  @media (max-width: 640px) {
+    #dostava img[alt="Pizza Foka restoran"] { width: clamp(52px, 15vw, 74px) !important; }
+    #dostava img[alt="Tvoja vrata"] { width: clamp(48px, 14vw, 68px) !important; }
+    #dostava [data-box-inner] { width: clamp(44px, 12vw, 54px) !important; }
+  }
+
+  /* 8. Shorter pinned duration on phones — same story, less scroll. */
+  @media (max-width: 600px) {
+    #pecenje { height: 440vh !important; }
+    #dostava { height: 160vh !important; }
+  }
+
+  /* 9. Priča carousel — mobile gets a natural vertical flow instead of
+     the desktop fixed-height 3D-flip stack (which clipped the heading
+     under the nav and overlapped chips with the controls). Only the
+     active slide shows; image on top, ingredient pills wrap below. */
+  @media (max-width: 760px) {
+    #prica { min-height: 100svh !important; justify-content: center !important; padding: 96px clamp(18px,5vw,28px) 34px !important; gap: clamp(18px,3.4vh,32px) !important; }
+    #prica > div:nth-child(2) { min-height: 0 !important; height: auto !important; perspective: none !important; }
+    #prica [data-slide] { position: absolute !important; inset: 0 !important; justify-content: center !important; gap: clamp(18px,3.2vh,30px) !important; }
+    #prica [data-slide][data-active="1"] { position: relative !important; inset: auto !important; }
+    #prica [data-slide] > div:nth-child(2) { flex-direction: column !important; gap: clamp(14px,2.6vh,24px) !important; }
+    #prica [data-slide] > div:nth-child(2) > div:nth-child(2) { order: -1; width: clamp(170px, 44vw, 230px) !important; }
+    #prica [data-slide] > div:nth-child(2) > div:nth-child(1),
+    #prica [data-slide] > div:nth-child(2) > div:nth-child(3) {
+      flex-direction: row !important; flex-wrap: wrap; justify-content: center;
+      align-items: center; gap: 12px !important; width: 100%; }
+    #prica [data-slide] span[style*="margin-right"],
+    #prica [data-slide] span[style*="margin-left"] { margin-left: 0 !important; margin-right: 0 !important; }
+    #prica [data-slide] h2 { font-size: clamp(1.7rem, 6vw, 2.2rem) !important; }
+    #prica [data-slide] p { font-size: clamp(1rem, 3.8vw, 1.15rem) !important; }
+  }
+
+  /* 10. Reduced motion: stable final state, no long/looping motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+    [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    [style*="emberRise"], [style*="floatP"], [style*="glowBreath"], [style*="scrollDot"] { animation: none !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Hanken Grotesk',system-ui,sans-serif; color:#2b2724; background:#faf7f2; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; -webkit-text-size-adjust:100%; text-size-adjust:100%; -webkit-tap-highlight-color:transparent; overflow-x:clip;">
+
+  <!-- ===== PRELOADER — baking pizza ===== -->
+  <div id="preloader" style="position:fixed; inset:0; z-index:9999; background:#faf7f2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:30px; transition:opacity .7s ease, visibility .7s ease;">
+    <div style="position:relative; width:clamp(148px,34vw,188px); height:clamp(148px,34vw,188px);">
+      <div aria-hidden="true" style="position:absolute; left:0; right:0; top:-24px; display:flex; justify-content:center; gap:15px; pointer-events:none;">
+        <span style="width:8px; height:24px; border-radius:999px; background:linear-gradient(to top, rgba(192,106,74,.5), rgba(192,106,74,0)); animation:fokaSteam 2.2s ease-in-out infinite;"></span>
+        <span style="width:8px; height:24px; border-radius:999px; background:linear-gradient(to top, rgba(192,106,74,.5), rgba(192,106,74,0)); animation:fokaSteam 2.2s ease-in-out .55s infinite;"></span>
+        <span style="width:8px; height:24px; border-radius:999px; background:linear-gradient(to top, rgba(192,106,74,.5), rgba(192,106,74,0)); animation:fokaSteam 2.2s ease-in-out 1.1s infinite;"></span>
+      </div>
+      <div aria-hidden="true" style="position:absolute; inset:-13px; border-radius:50%; background:conic-gradient(from 0deg, rgba(184,134,47,0) 0deg, #b8862f 55deg, #e06e3a 125deg, rgba(224,110,58,0) 200deg, rgba(224,110,58,0) 360deg); -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px)); mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px)); animation:fokaSpin 1.5s linear infinite;"></div>
+      <img src="assets/pizza/baked-round-sm.webp" alt="Pečena pica" fetchpriority="high" decoding="async" style="position:absolute; inset:5px; width:calc(100% - 10px); height:calc(100% - 10px); object-fit:contain; animation:fokaSpin 7s linear infinite; filter:drop-shadow(0 14px 26px rgba(43,39,36,.2));">
+    </div>
+  </div>
+
+  <!-- ===== NAV ===== -->
+  <nav id="nav" style="position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:9px clamp(16px,4vw,44px); background:rgba(250,247,242,0); border-bottom:1px solid rgba(43,39,36,0); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:background .5s ease, border-color .5s ease, transform .45s ease;">
+    <a href="#top" aria-label="Foka — početna" style="display:flex; align-items:center;">
+      <img data-nav-logo="" src="assets/foka-logo-full.png" alt="Pizza Foka" style="display:block; height:42px; width:auto; transition:filter .5s ease;">
+    </a>
+    <div style="display:flex; align-items:center; gap:clamp(10px,2vw,22px);">
+      <a data-nav-text="" href="tel:+381643063907" style="font-family:'Space Mono',monospace; font-size:.82rem; letter-spacing:.06em; color:#2b2724; transition:color .5s ease;">064 / 30 63 907</a>
+      <a href="#kontakt" style="font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.82rem; letter-spacing:.03em; color:#14100d; background:#e4b73a; padding:11px 20px; border-radius:999px;" style-hover="background:#d1a52a;">Naruči</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header id="top" style="min-height:100vh; display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); align-items:center; gap:clamp(40px,6vw,90px); max-width:1200px; margin:0 auto; padding:130px clamp(20px,4vw,48px) 80px;">
+    <div>
+      <p data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.8rem; letter-spacing:.24em; text-transform:uppercase; color:#b8862f; margin:0 0 28px;">Adice, Novi Sad - od 2016.</p>
+      <h1 data-reveal="" data-delay="120" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2.9rem,7vw,5.6rem); line-height:1.02; letter-spacing:-.02em; margin:0 0 30px;">Svaka pica ima svoj početak.</h1>
+      <p data-reveal="" data-delay="260" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; font-size:clamp(1.15rem,2.2vw,1.5rem); line-height:1.55; color:rgba(43,39,36,.72); max-width:34ch; margin:0 0 40px; text-wrap:pretty;">Ovo je naš. Skroluj polako.</p>
+      <div data-reveal="" data-delay="380" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; display:flex; flex-wrap:wrap; gap:14px;">
+        <a href="#prica" style="display:inline-block; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.85rem; letter-spacing:.04em; color:#2b2724; border:1px solid #2b2724; padding:15px 30px; border-radius:999px;" style-hover="background:#2b2724; color:#faf7f2;">Pogledaj priču</a>
+        <a href="#meni" style="display:inline-block; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.85rem; letter-spacing:.04em; color:#b8862f; padding:15px 20px; border-radius:999px;" style-hover="color:#c06a4a;">Pogledaj meni →</a>
+      </div>
+    </div>
+    <div data-reveal="" data-delay="200" style="opacity:0; transform:translateY(30px); transition:opacity 1.2s ease, transform 1.2s ease; position:relative; aspect-ratio:1/1;">
+      <img id="hero-img" data-parallax="0.05" src="assets/slots/hero-img.webp" alt="" style="width:100%;height:100%;object-fit:contain;border-radius:0;display:block;">
+    </div>
+    <div style="position:absolute; bottom:34px; left:50%; transform:translateX(-50%); width:22px; height:36px; border:1px solid rgba(43,39,36,.3); border-radius:999px; display:flex; justify-content:center; padding-top:7px;">
+      <span style="width:4px; height:8px; border-radius:999px; background:#b8862f; animation:scrollDot 1.8s ease-in-out infinite;"></span>
+    </div>
+  </header>
+
+  <!-- ===== PRIČA — centered plate + floating labels, arrow-navigated (flip from below) ===== -->
+  <section id="prica" style="position:relative; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(20px,3vh,36px); padding:120px clamp(20px,4vw,48px) 90px; background:#faf7f2; overflow:hidden;">
+
+    <p data-reveal="" style="opacity:0; transform:translateY(20px); transition:opacity 1s ease, transform 1s ease; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.74rem; letter-spacing:.26em; text-transform:uppercase; color:#b8862f; margin:0; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 12px 30px -22px rgba(43,39,36,.5); padding:11px 22px; border-radius:999px;">Od testa do priloga</p>
+
+    <div style="position:relative; width:100%; max-width:1100px; min-height:clamp(520px,72vh,720px); perspective:1600px;">
+
+      <!-- SLIDE 1 — Testo -->
+      <div data-slide="" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(26px,4vh,48px); transform-origin:center bottom; transform:none; opacity:1; pointer-events:auto; transition:transform .75s cubic-bezier(.22,.61,.36,1), opacity .5s ease; backface-visibility:hidden;">
+        <div style="text-align:center; max-width:640px; padding:0 12px;">
+          <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2rem,4.8vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:0 0 14px;">Sve počinje od testa.</h2>
+          <p style="font-size:clamp(1.05rem,1.7vw,1.3rem); line-height:1.6; color:rgba(43,39,36,.66); margin:0 auto; max-width:40ch; text-wrap:pretty;">Mesimo ga sveže svaki dan</p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:18px clamp(22px,4vw,52px); align-items:center; justify-content:center; width:100%;">
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-end;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Brašno</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-right:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Voda</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>So</span>
+          </div>
+          <div style="flex:0 0 auto; width:clamp(210px,32vh,360px); aspect-ratio:1/1; border-radius:50%; overflow:hidden; box-shadow:0 44px 90px -44px rgba(43,39,36,.5); position:relative;"><img id="story-1" src="assets/slots/story-1.webp" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Kvasac</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-left:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Malo ulja</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Ručno mešeno</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 — Pelat i sir -->
+      <div data-slide="" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(26px,4vh,48px); transform-origin:center bottom; transform:rotateX(-90deg); opacity:0; pointer-events:none; transition:transform .75s cubic-bezier(.22,.61,.36,1), opacity .5s ease; backface-visibility:hidden;">
+        <div style="text-align:center; max-width:640px; padding:0 12px;">
+          <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2rem,4.8vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:0 0 14px;">Pelat, sir i origano</h2>
+          <p style="font-size:clamp(1.05rem,1.7vw,1.3rem); line-height:1.6; color:rgba(43,39,36,.66); margin:0 auto; max-width:40ch; text-wrap:pretty;">Baš koliko treba.</p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:18px clamp(22px,4vw,52px); align-items:center; justify-content:center; width:100%;">
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-end;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Pelat</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-right:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Sir</span>
+          </div>
+          <div style="flex:0 0 auto; width:clamp(210px,32vh,360px); aspect-ratio:1/1; border-radius:50%; overflow:hidden; box-shadow:0 44px 90px -44px rgba(43,39,36,.5); position:relative;"><img src="assets/pelat-sir.png" alt="Pelat, sir i origano" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.35);"></div>
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Origano</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-left:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Domaći ukus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — Prilozi -->
+      <div data-slide="" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(26px,4vh,48px); transform-origin:center bottom; transform:rotateX(-90deg); opacity:0; pointer-events:none; transition:transform .75s cubic-bezier(.22,.61,.36,1), opacity .5s ease; backface-visibility:hidden;">
+        <div style="text-align:center; max-width:640px; padding:0 12px;">
+          <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2rem,4.8vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:0 0 14px;">Prilozi po tvojoj želji.</h2>
+          <p style="font-size:clamp(1.05rem,1.7vw,1.3rem); line-height:1.6; color:rgba(43,39,36,.66); margin:0 auto; max-width:40ch; text-wrap:pretty;">Svaka pica može da bude baš po tvom ukusu.</p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:18px clamp(22px,4vw,52px); align-items:center; justify-content:center; width:100%;">
+          <div style="display:flex; flex-direction:column; gap:14px; align-items:flex-end;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Šunka</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-right:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Pečenica</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Šampinjoni</span>
+          </div>
+          <div style="flex:0 0 auto; width:clamp(210px,32vh,360px); aspect-ratio:1/1; border-radius:50%; overflow:hidden; box-shadow:0 44px 90px -44px rgba(43,39,36,.5); position:relative;"><img src="assets/prilozi.png" alt="Prilozi — šunka, pečenica, šampinjoni" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.35);"></div>
+          <div style="display:flex; flex-direction:column; gap:14px; align-items:flex-start;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Masline</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-left:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Feferoni</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — Domaća lepinja -->
+      <div data-slide="" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(26px,4vh,48px); transform-origin:center bottom; transform:rotateX(-90deg); opacity:0; pointer-events:none; transition:transform .75s cubic-bezier(.22,.61,.36,1), opacity .5s ease; backface-visibility:hidden;">
+        <div style="text-align:center; max-width:640px; padding:0 12px;">
+          <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2rem,4.8vw,3.6rem); line-height:1.05; letter-spacing:-.02em; margin:0 0 14px;">Lepinju pravimo sami.</h2>
+          <p style="font-size:clamp(1.05rem,1.7vw,1.3rem); line-height:1.6; color:rgba(43,39,36,.66); margin:0 auto; max-width:40ch; text-wrap:pretty;">Od istog testa. Peče se tek kad je poručiš.</p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:18px clamp(22px,4vw,52px); align-items:center; justify-content:center; width:100%;">
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-end;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Isto testo</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-right:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Domaća</span>
+          </div>
+          <div style="flex:0 0 auto; width:clamp(210px,32vh,360px); aspect-ratio:1/1; border-radius:50%; overflow:hidden; box-shadow:0 44px 90px -44px rgba(43,39,36,.5); position:relative;"><img id="story-4" src="assets/slots/story-4.webp" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start;">
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap;"><span style="width:9px; height:9px; border-radius:999px; background:#c06a4a;"></span>Peče se sveže</span>
+            <span style="display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid rgba(43,39,36,.06); box-shadow:0 16px 34px -22px rgba(43,39,36,.45); padding:11px 18px; border-radius:999px; font-weight:600; font-size:.92rem; white-space:nowrap; margin-left:clamp(0px,3vw,40px);"><span style="width:9px; height:9px; border-radius:999px; background:#e4b73a;"></span>Za sendviče</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- controls -->
+    <div style="display:flex; align-items:center; gap:22px; z-index:5;">
+      <button data-prev="" type="button" aria-label="Prethodno" style="width:54px; height:54px; border-radius:50%; border:1px solid rgba(43,39,36,.3); background:transparent; color:#2b2724; font-size:1.3rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .3s ease, color .3s ease, border-color .3s ease;" style-hover="background:#2b2724; color:#faf7f2; border-color:#2b2724;">←</button>
+      <span data-counter="" style="font-family:'Space Mono',monospace; font-size:.76rem; letter-spacing:.16em; color:rgba(43,39,36,.6); min-width:150px; text-align:center;">01 / 04 - Testo</span>
+      <button data-next="" type="button" aria-label="Sledeće" style="width:54px; height:54px; border-radius:50%; border:1px solid rgba(43,39,36,.3); background:transparent; color:#2b2724; font-size:1.3rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .3s ease, color .3s ease, border-color .3s ease;" style-hover="background:#2b2724; color:#faf7f2; border-color:#2b2724;">→</button>
+    </div>
+  </section>
+
+  <!-- ===== SKLAPANJE — pizza configurator, instant image switch ===== -->
+  <section id="sklapanje" style="position:relative; background:#faf1e8; padding:clamp(70px,11vh,150px) clamp(20px,4vw,48px); overflow:hidden;">
+    <div class="pc-wrap" style="max-width:1150px; margin:0 auto; display:grid; grid-template-columns:1.05fr .95fr; align-items:center; gap:clamp(30px,5vw,80px);">
+
+      <!-- PIZZA (side) -->
+      <div class="pc-pizza-side" style="position:relative; display:flex; justify-content:center;">
+        <div style="position:relative; width:min(60vw,540px); aspect-ratio:1/1;">
+          <div aria-hidden="true" style="position:absolute; left:50%; top:50%; width:112%; height:112%; transform:translate(-50%,-50%); background:radial-gradient(circle at 50% 50%, rgba(224,110,58,.14) 0%, rgba(224,110,58,0) 66%); pointer-events:none;"></div>
+          <img data-pc-img="" src="assets/pizza/step-0.png" alt="Pica u pripremi" draggable="false" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain;">
+        </div>
+      </div>
+
+      <!-- CONTROLS (side) -->
+      <div class="pc-controls">
+        <p data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.76rem; letter-spacing:.26em; text-transform:uppercase; color:#c06a4a; margin:0 0 16px;">Pre pećnice</p>
+        <h2 data-reveal="" data-delay="100" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2.1rem,4.6vw,3.5rem); line-height:1.05; letter-spacing:-.02em; margin:0 0 16px;">Složi svoju Capricciosu.</h2>
+        <p data-reveal="" data-delay="180" data-pc-hint="" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; font-size:clamp(1.02rem,1.6vw,1.22rem); line-height:1.55; color:rgba(43,39,36,.6); max-width:38ch; margin:0 0 clamp(28px,4vh,42px); text-wrap:pretty;">Dodaj sastojke redom.</p>
+
+        <div class="pc-cards" style="display:flex; flex-direction:column; gap:14px; max-width:400px;">
+          <button type="button" class="pc-card" data-ing="mozzarella" data-step="1">
+            <span class="pc-tip">dodaj mocarelu</span>
+            <img class="pc-thumb" src="assets/ing/mozzarella-1.png" alt="" draggable="false">
+            <span class="pc-name">Mocarela</span>
+            <span class="pc-check">✓</span>
+          </button>
+          <button type="button" class="pc-card" data-ing="ham" data-step="2" data-future="1">
+            <span class="pc-tip">dodaj šunku</span>
+            <img class="pc-thumb" src="assets/ing/ham-1.png" alt="" draggable="false">
+            <span class="pc-name">Šunka</span>
+            <span class="pc-check">✓</span>
+          </button>
+          <button type="button" class="pc-card" data-ing="mushroom" data-step="3" data-future="1">
+            <span class="pc-tip">dodaj pečurke</span>
+            <img class="pc-thumb" src="assets/ing/mushroom-1.png" alt="" draggable="false">
+            <span class="pc-name">Pečurke</span>
+            <span class="pc-check">✓</span>
+          </button>
+          <button type="button" class="pc-card" data-ing="olive" data-step="4" data-future="1">
+            <span class="pc-tip">dodaj zelene masline</span>
+            <img class="pc-thumb" src="assets/ing/olive-1.png" alt="" draggable="false">
+            <span class="pc-name">Zelene masline</span>
+            <span class="pc-check">✓</span>
+          </button>
+        </div>
+
+        <button type="button" data-pc-cta="" style="appearance:none; margin-top:clamp(28px,4vh,42px); font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:1.05rem; color:#241f1c; background:#e06e3a; border:0; padding:17px 38px; border-radius:999px; cursor:not-allowed; opacity:.35; transform:translateY(8px); transition:opacity .6s ease, transform .6s ease, background .3s ease; box-shadow:0 18px 34px -18px rgba(224,110,58,.7);">Ispeci picu <span style="font-size:1.1em;">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BAKING — round pizza frame centered, copy below, cinematic ===== -->
+  <section id="pecenje" style="position:relative; height:600vh; background:#14100d; color:#f4e9dc;">
+    <div style="position:sticky; top:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(24px,4vh,48px); padding:clamp(36px,6vh,90px) clamp(20px,4vw,48px);">
+
+      <!-- oven glow + embers -->
+      <div data-glow="" style="position:absolute; left:50%; top:50%; width:min(78vh,760px); height:min(78vh,760px); transform:translate(-50%,-50%); background:radial-gradient(circle at center, rgba(255,140,35,.75) 0%, rgba(255,95,15,.34) 36%, rgba(20,16,13,0) 70%); filter:blur(34px); opacity:.5; pointer-events:none; animation:glowBreath 6s ease-in-out infinite;"></div>
+      <!-- varnice svuda okolo -->
+      <div style="position:absolute; inset:0; pointer-events:none;">
+        <span style="position:absolute; left:12%; bottom:14%; width:5px; height:5px; border-radius:999px; background:#ffb15a; box-shadow:0 0 8px 2px rgba(255,150,60,.7); animation:emberRise 7s ease-in infinite;"></span>
+        <span style="position:absolute; left:24%; bottom:8%; width:4px; height:4px; border-radius:999px; background:#ff9538; box-shadow:0 0 8px 2px rgba(255,150,60,.6); animation:emberRise 9s ease-in 1.5s infinite;"></span>
+        <span style="position:absolute; left:38%; bottom:11%; width:6px; height:6px; border-radius:999px; background:#ffc178; box-shadow:0 0 10px 3px rgba(255,150,60,.6); animation:emberRise 8s ease-in .8s infinite;"></span>
+        <span style="position:absolute; left:62%; bottom:9%; width:5px; height:5px; border-radius:999px; background:#ffb15a; box-shadow:0 0 8px 2px rgba(255,150,60,.7); animation:emberRise 8.5s ease-in 2s infinite;"></span>
+        <span style="position:absolute; left:76%; bottom:12%; width:6px; height:6px; border-radius:999px; background:#ffc178; box-shadow:0 0 10px 3px rgba(255,150,60,.6); animation:emberRise 10s ease-in .4s infinite;"></span>
+        <span style="position:absolute; left:88%; bottom:7%; width:4px; height:4px; border-radius:999px; background:#ff9538; box-shadow:0 0 8px 2px rgba(255,150,60,.6); animation:emberRise 9.5s ease-in 2.4s infinite;"></span>
+        <span style="position:absolute; left:16%; top:26%; width:4px; height:4px; border-radius:999px; background:#ffb15a; box-shadow:0 0 8px 2px rgba(255,150,60,.6); animation:floatP 7s ease-in-out .6s infinite;"></span>
+        <span style="position:absolute; left:84%; top:30%; width:5px; height:5px; border-radius:999px; background:#ffc178; box-shadow:0 0 9px 2px rgba(255,150,60,.6); animation:floatP 8s ease-in-out 1.2s infinite;"></span>
+        <span style="position:absolute; left:30%; top:18%; width:3px; height:3px; border-radius:999px; background:#ff9538; box-shadow:0 0 7px 2px rgba(255,150,60,.5); animation:floatP 6.5s ease-in-out 1.8s infinite;"></span>
+        <span style="position:absolute; left:70%; top:16%; width:4px; height:4px; border-radius:999px; background:#ffb15a; box-shadow:0 0 8px 2px rgba(255,150,60,.6); animation:floatP 7.5s ease-in-out .3s infinite;"></span>
+      </div>
+
+      <p style="position:relative; z-index:3; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.76rem; letter-spacing:.26em; text-transform:uppercase; color:#ff9538; margin:0;">05 - Pečenje</p>
+
+      <!-- ogromne narandžaste sekunde, gore na sredini -->
+      <div data-bake-timer="" style="position:relative; z-index:3; text-align:center; line-height:1;">
+        <span data-secs="" style="display:block; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(4rem,13vw,8.5rem); line-height:.85; color:#ff8a2a; text-shadow:0 0 42px rgba(255,120,30,.65), 0 0 100px rgba(255,90,15,.45);">0<span style="font-size:.34em; letter-spacing:.04em;"> s</span></span>
+        <span data-temp="" style="display:block; margin-top:12px; font-family:'Space Mono',monospace; font-size:.72rem; letter-spacing:.24em; color:rgba(255,149,56,.7);">320°C</span>
+      </div>
+
+      <!-- round pizza frame — circular, sized to the pizza, with intensifying glow behind -->
+      <div data-bake-halo="" style="position:absolute; left:50%; top:50%; z-index:1; width:clamp(300px,64vh,620px); aspect-ratio:1/1; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(circle at 50% 50%, rgba(255,150,45,.9) 0%, rgba(255,105,20,.55) 42%, rgba(255,80,10,0) 72%); filter:blur(22px); opacity:.5; pointer-events:none;"></div>
+      <div style="position:relative; z-index:2; flex:0 0 auto; width:clamp(280px,54vh,540px); aspect-ratio:1/1; border-radius:50%; overflow:hidden; box-shadow:0 0 70px 6px rgba(255,110,25,.4), inset 0 0 60px rgba(20,10,4,.45);">
+        <img data-bake-img="" src="assets/framesb/frame-001.jpg" alt="Pečenje pice" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; transform:scale(1.1); will-change:contents;">
+      </div>
+
+      <!-- copy below the pizza, one line at a time -->
+      <div style="position:relative; z-index:3; display:grid; place-items:center; min-height:2.4em; text-align:center;">
+        <p data-line="" style="grid-column:1; grid-row:1; margin:0; opacity:1; transform:translateY(0); transition:opacity .8s ease, transform .8s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(1.8rem,4vw,3rem); line-height:1.12; color:#f4e9dc;">Peć je spremna.</p>
+        <p data-line="" style="grid-column:1; grid-row:1; margin:0; opacity:0; transform:translateY(14px); transition:opacity .8s ease, transform .8s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(1.8rem,4vw,3rem); line-height:1.12; color:#f4e9dc;">Sveže pripremljena.</p>
+        <p data-line="" style="grid-column:1; grid-row:1; margin:0; opacity:0; transform:translateY(14px); transition:opacity .8s ease, transform .8s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(1.8rem,4vw,3rem); line-height:1.12; color:#f4e9dc;">Počinje transformacija.</p>
+        <p data-line="" style="grid-column:1; grid-row:1; margin:0; opacity:0; transform:translateY(14px); transition:opacity .8s ease, transform .8s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(1.8rem,4vw,3rem); line-height:1.12; color:#f4e9dc;">Skoro gotovo.</p>
+        <p data-line="" style="grid-column:1; grid-row:1; margin:0; opacity:0; transform:translateY(14px); transition:opacity .8s ease, transform .8s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(1.8rem,4vw,3rem); line-height:1.12; color:#f4e9dc;">Savršeno pečena.</p>
+      </div>
+
+      <!-- spark tagline -->
+      <div style="position:relative; z-index:3; display:inline-block;">
+        <span style="position:absolute; left:-22px; top:50%; width:5px; height:5px; border-radius:999px; background:#ffb15a; box-shadow:0 0 8px 2px rgba(255,150,60,.7); animation:floatP 6s ease-in-out infinite;"></span>
+        <span style="position:absolute; right:-24px; top:20%; width:4px; height:4px; border-radius:999px; background:#ffc178; box-shadow:0 0 8px 2px rgba(255,150,60,.6); animation:floatP 7s ease-in-out 1.1s infinite;"></span>
+        <span style="position:absolute; left:50%; top:-16px; width:4px; height:4px; border-radius:999px; background:#ff9538; box-shadow:0 0 8px 2px rgba(255,150,60,.6); animation:emberRise 6.5s ease-in .5s infinite;"></span>
+        <p style="margin:0; font-family:'Space Mono',monospace; font-size:.74rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,180,120,.85);">Svaki trenutak pravi razliku.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ZA STO — sticky 3 koraka: seče se → pakuje → na skuter ===== -->
+  <section id="zalogaj" style="position:relative; background:#faf1e8;">
+    <div id="dostava" style="height:200vh; position:relative;">
+      <div style="position:sticky; top:0; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(22px,4vh,44px); max-width:1080px; margin:0 auto; padding:clamp(70px,11vh,150px) clamp(20px,4vw,48px) clamp(56px,8vh,100px);">
+        <div style="text-align:center;">
+          <p data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease; font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:.76rem; letter-spacing:.28em; text-transform:uppercase; color:#c06a4a; margin:0 0 16px;">06 - Dostava</p>
+          <h2 data-reveal="" data-delay="120" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2.2rem,5.5vw,3.8rem); line-height:1.04; letter-spacing:-.02em; color:#241f1c; margin:0;">Pica stiže do tebe.</h2>
+        </div>
+
+        <div data-route-wrap="" style="position:relative; width:100%; height:clamp(170px,26vh,300px);">
+        <svg viewBox="0 0 1080 300" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; overflow:visible;">
+          <path data-route-base="" d="M70,232 C320,232 320,170 540,170 C760,170 760,232 1010,232" fill="none" stroke="rgba(43,39,36,.12)" stroke-width="2.5" stroke-dasharray="2 12" stroke-linecap="round"></path>
+          <path data-route-line="" d="M70,232 C320,232 320,170 540,170 C760,170 760,232 1010,232" fill="none" stroke="#e06e3a" stroke-width="3.5" stroke-linecap="round"></path>
+        </svg>
+        <!-- pin: Foka restoran (start) -->
+        <div style="position:absolute; left:6.48%; top:77.3%; transform:translate(-50%,-106%); text-align:center; z-index:2;">
+          <img src="assets/delivery-shop.png" alt="Pizza Foka restoran" style="display:block; width:clamp(70px,9vw,104px); height:auto; margin:0 auto 8px; filter:drop-shadow(0 12px 16px rgba(120,55,25,.20));">
+          <span style="font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:#241f1c;">Foka</span>
+        </div>
+        <!-- pin: tvoja vrata (kraj) -->
+        <div data-route-end="" style="position:absolute; left:93.5%; top:77.3%; transform:translate(-50%,-106%); text-align:center; opacity:.4; transition:opacity .5s ease; z-index:2;">
+          <img src="assets/delivery-home.png" alt="Tvoja vrata" style="display:block; width:clamp(64px,8vw,92px); height:auto; margin:0 auto 8px; filter:drop-shadow(0 12px 16px rgba(120,55,25,.20));">
+          <span style="font-family:'Hanken Grotesk',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:#c06a4a;">Tvoja vrata</span>
+          <span data-route-eta="" style="display:block; margin-top:4px; font-family:'Space Mono',monospace; font-size:.68rem; color:rgba(43,39,36,.5);">~25 min</span>
+        </div>
+        <!-- paket koji putuje (pizza kutija) -->
+        <div data-route-dot="" style="position:absolute; left:0; top:0; width:0; height:0; will-change:transform; z-index:4;">
+          <div data-box-inner="" style="position:absolute; left:0; top:0; width:clamp(46px,6.4vw,62px); transform:translate(-50%,-60%); transform-origin:50% 58%; will-change:transform;">
+            <span aria-hidden="true" style="position:absolute; left:50%; top:66%; width:170%; height:150%; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(circle, rgba(255,150,60,.30), rgba(255,120,30,0) 66%); filter:blur(3px); pointer-events:none;"></span>
+            <img src="assets/delivery-box.png" alt="Foka pizza kutija" style="position:relative; display:block; width:100%; height:auto; filter:drop-shadow(0 7px 9px rgba(120,55,25,.30));">
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- organska talasasta tranzicija ka meniju -->
+    <div style="position:absolute; left:0; right:0; bottom:-1px; line-height:0; pointer-events:none;">
+      <svg viewBox="0 0 1440 150" preserveAspectRatio="none" style="display:block; width:100%; height:clamp(70px,11vw,150px);"><path fill="#faf7f2" d="M0,78 C150,18 320,8 470,52 C620,96 700,130 880,118 C1010,109 1120,52 1260,44 C1330,40 1390,58 1440,72 L1440,150 L0,150 Z"></path></svg>
+    </div>
+  </section>
+
+  <!-- ===== MENI ===== -->
+  <section id="meni" style="max-width:1200px; margin:0 auto; padding:clamp(60px,9vh,120px) clamp(20px,4vw,48px) clamp(80px,12vh,160px);">
+    <div data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease; text-align:center; margin:0 0 clamp(48px,7vh,90px);">
+      <p style="font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.76rem; letter-spacing:.26em; text-transform:uppercase; color:#b8862f; margin:0 0 18px;">Meni</p>
+      <h2 style="font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2.4rem,6vw,4rem); line-height:1.04; letter-spacing:-.02em; margin:0;">Šta se peče kod nas.</h2>
+      <p style="font-family:'Space Mono',monospace; font-size:.8rem; letter-spacing:.06em; color:rgba(43,39,36,.5); margin:20px 0 0;">pizza 24 / 32 / 50 cm · cene u dinarima</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:clamp(40px,5vw,80px); align-items:start;">
+
+      <!-- PIZZE -->
+      <div data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease; grid-column:1/-1;">
+        <h3 style="font-family:'Newsreader',serif; font-weight:400; font-size:2rem; margin:0 0 4px;">Pizze</h3>
+        <div style="height:2px; background:#e4b73a; width:44px; margin:0 0 18px;"></div>
+        <div class="menu-cols" style="column-gap:clamp(30px,4vw,64px);">
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Margarita</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, masline</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">530 / 920 / 1670</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Capricciosa</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, šunka, šampinjoni, masline</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">530 / 970 / 1680</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Peperoni</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, kulen, šampinjoni, feferoni, masline</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">570 / 1000 / 1750</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Foka specijal</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, pečenica, šunka, šampinjoni, pavlaka, jaje</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">610 / 1080 / 1830</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Quattro Stagioni</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, šunka, pečenica, šampinjoni, kukuruz, paprika</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">610 / 1040 / 1780</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Napoli</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, šunka, kulen, paprika, luk crni, feferoni</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">580 / 1040 / 1760</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Vegeterijana</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, šampinjoni, paradajz, kukuruz, paprika, rukola</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">570 / 1040 / 1760</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Lombardija</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, pečenica, pavlaka, rukola</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">580 / 1000 / 1770</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Mornarska</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, tunjevina, kukuruz</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">610 / 1040 / 1780</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Vojvođanska-Foka</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, šunka, kulen, pečenica, slanina, šampinjoni, susam</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">620 / 1090 / 1980</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Calcona</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, šampinjoni, pavlaka (preklopljeno testo)</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">580 / 1000</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Sudžuk pica</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, sudžuk, šampinjoni, feta sir, ljuta paprika</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">750 / 1170 / 2200</div></div>
+          <div style="break-inside:avoid; display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:13px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Pizza sa pilećom šunkom</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pelat, sir, pileća šunka, šampinjoni</div></div><div style="font-family:'Space Mono',monospace; font-size:.82rem; white-space:nowrap;">610 / 1100 / 1760</div></div>
+        </div>
+        <p style="margin:16px 0 0; font-size:.82rem; line-height:1.6; color:rgba(43,39,36,.55);"><span style="font-weight:600; color:#b8862f; text-transform:uppercase; letter-spacing:.1em; font-size:.72rem;">Dodaci&nbsp;&nbsp;</span>jaje +60, šunka +200, kulen +200, pečenica +200, slanina +200, masline +100, sir +220, šampinjoni +90, pavlaka +60, majonez +60, rukola +80/+120, povrće +100, ljute paprike +10</p>
+      </div>
+
+      <!-- SENDVIČI -->
+      <div data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease;">
+        <h3 style="font-family:'Newsreader',serif; font-weight:400; font-size:2rem; margin:0 0 4px;">Sendviči</h3>
+        <div style="height:2px; background:#c06a4a; width:44px; margin:0 0 4px;"></div>
+        <p style="font-size:.8rem; color:rgba(43,39,36,.5); margin:0 0 14px;">u domaćoj lepinji</p>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Sendvič šunka</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">450</span></div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Sendvič kulen</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">500</span></div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Sendvič pečenica</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">500</span></div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Foka sendvič</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">520</span></div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Tunjevina sendvič</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">520</span></div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Indeks sendvič</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">500</span></div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Sudžuk sendvič</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">610</span></div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Sa pilećom šunkom</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">590</span></div>
+        <div style="display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Hemendeks u lepinji</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">šunka, jaje, salata, paradajz, krastavci</div></div><span style="font-family:'Space Mono',monospace; font-size:.82rem;">500</span></div>
+        <div style="display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Bekendeks u lepinji</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">slanina, jaje, salata, paradajz, krastavci</div></div><span style="font-family:'Space Mono',monospace; font-size:.82rem;">500</span></div>
+        <div style="display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Dimljena kobasica u ćabati</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pavlaka, senf, salata, paradajz, krastavac, luk</div></div><span style="font-family:'Space Mono',monospace; font-size:.82rem;">550</span></div>
+        <p style="margin:14px 0 0; font-size:.8rem; line-height:1.6; color:rgba(43,39,36,.55);"><span style="font-weight:600; color:#c06a4a; text-transform:uppercase; letter-spacing:.1em; font-size:.72rem;">Premazi&nbsp;&nbsp;</span>pavlaka, majonez, tzatziki, urnebes, aurora, rukola</p>
+      </div>
+
+      <!-- PALAČINKE -->
+      <div data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease;">
+        <h3 style="font-family:'Newsreader',serif; font-weight:400; font-size:2rem; margin:0 0 4px;">Palačinke</h3>
+        <div style="height:2px; background:#e4b73a; width:44px; margin:0 0 14px;"></div>
+        <p style="font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:#b8862f; font-weight:600; margin:0 0 6px;">Slane</p>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Šunka</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">400</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Kulen</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">420</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Pečenica</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">420</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Foka</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">460</span></div>
+        <p style="font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:#c06a4a; font-weight:600; margin:20px 0 6px;">Slatke</p>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Nutela</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">350</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Eurokrem</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">300</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Marmelada</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">290</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Krem</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">300</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Krem beli</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">290</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Krem - keks</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">300</span></div>
+        <div style="display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Foka palačinka</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">nutela, višnja, keks, šlag</div></div><span style="font-family:'Space Mono',monospace; font-size:.82rem;">450</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Med</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">300</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Šećer i orasi</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">300</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Po želji / prazna</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">150</span></div>
+        <p style="margin:14px 0 0; font-size:.8rem; line-height:1.6; color:rgba(43,39,36,.55);"><span style="font-weight:600; color:#b8862f; text-transform:uppercase; letter-spacing:.1em; font-size:.72rem;">Dodaci&nbsp;&nbsp;</span>banana, ananas, šumsko voće, višnja, kokos, orasi, lešnik, med, šlag, plazma, keks — od +40</p>
+      </div>
+
+      <!-- SALATE + PIĆE -->
+      <div data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease;">
+        <h3 style="font-family:'Newsreader',serif; font-weight:400; font-size:2rem; margin:0 0 4px;">Salate</h3>
+        <div style="height:2px; background:#c06a4a; width:44px; margin:0 0 14px;"></div>
+        <div style="display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Salata Foka</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">pečenica, slanina, krutoni, zelena salata, parmezan</div></div><span style="font-family:'Space Mono',monospace; font-size:.82rem;">800</span></div>
+        <div style="display:flex; justify-content:space-between; gap:16px; align-items:baseline; padding:12px 0; border-bottom:1px solid rgba(43,39,36,.08);"><div><div style="font-weight:600;">Salata Tunjevina</div><div style="font-size:.8rem; color:rgba(43,39,36,.5); margin-top:3px;">tunjevina, krutoni, zelena salata, masline, luk</div></div><span style="font-family:'Space Mono',monospace; font-size:.82rem;">800</span></div>
+
+        <h3 style="font-family:'Newsreader',serif; font-weight:400; font-size:2rem; margin:28px 0 4px;">Piće</h3>
+        <div style="height:2px; background:#e4b73a; width:44px; margin:0 0 14px;"></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Cola / Zero / Fanta / Sprite 0.5</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">250</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Cola limenka 0.33</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">250</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Schweppes bitter</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">250</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Nes tea / Next sok 0.5</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">260</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Ultra energy 0.25</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">260</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Rosa / Knjaz Miloš voda 0.5</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">230</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Heineken 0.4</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">300</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Birra Moretti 0.4</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">250</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Somersby 0.33</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">290</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Espresso</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">190</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Espresso sa mlekom</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">210</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Espresso sa šlagom</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">220</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Limunada</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">270</span></div>
+        <div style="display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(43,39,36,.08);"><span style="font-weight:600;">Kafa za poneti / Domaća kafa</span><span style="font-family:'Space Mono',monospace; font-size:.82rem;">180</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== KONTAKT ===== -->
+  <section id="kontakt" style="background:#14100d; color:#f4e9dc; padding:clamp(80px,12vh,160px) clamp(20px,4vw,48px) clamp(48px,7vh,90px);">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:clamp(40px,6vw,90px); align-items:center;">
+      <div>
+        <p data-reveal="" style="opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.76rem; letter-spacing:.26em; text-transform:uppercase; color:#e4b73a; margin:0 0 22px;">Dođite u Foku</p>
+        <h2 data-reveal="" data-delay="120" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; font-family:'Newsreader',serif; font-weight:400; font-size:clamp(2.4rem,6vw,4rem); line-height:1.04; letter-spacing:-.02em; margin:0 0 24px;">Naručite, stižemo.</h2>
+        <p data-reveal="" data-delay="220" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; font-size:clamp(1.05rem,1.7vw,1.25rem); line-height:1.7; color:rgba(244,233,220,.72); max-width:44ch; margin:0 0 34px; text-wrap:pretty;">Picerija i palačinkarnica Foka radi od januara 2016. Dostava na području Novog Sada, svakog dana.</p>
+        <a data-reveal="" data-delay="320" href="tel:+381643063907" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; display:inline-block; font-family:'Hanken Grotesk',sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.03em; color:#14100d; background:#e4b73a; padding:17px 34px; border-radius:999px;" style-hover="background:#d1a52a;">Naruči - 064 / 30 63 907</a>
+      </div>
+      <div data-reveal="" data-delay="200" style="opacity:0; transform:translateY(24px); transition:opacity 1.1s ease, transform 1.1s ease; display:grid; gap:22px; font-size:1.02rem; line-height:1.5;">
+        <div><div style="font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(244,233,220,.45); margin-bottom:6px;">Adresa</div>Branka Ćopića 33a, Novi Sad</div>
+        <div><div style="font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(244,233,220,.45); margin-bottom:6px;">Radno vreme</div>Svaki dan · 08-23h</div>
+        <div><div style="font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(244,233,220,.45); margin-bottom:6px;">Telefon</div><a href="tel:+381643063907" style="color:#e4b73a;">064 / 30 63 907</a></div>
+        <div><div style="font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(244,233,220,.45); margin-bottom:6px;">Dostava</div>Područje Novog Sada · 08–23h</div>
+      </div>
+    </div>
+    <div style="max-width:1200px; margin:clamp(56px,8vh,90px) auto 0; padding-top:28px; border-top:1px solid rgba(244,233,220,.12); display:flex; flex-wrap:wrap; gap:12px 32px; align-items:center; justify-content:space-between;">
+      <img src="assets/foka-logo-full.png" alt="Pizza Foka" style="display:block; height:44px; width:auto; filter:invert(1) brightness(1.9);">
+      <span style="font-family:'Space Mono',monospace; font-size:.72rem; letter-spacing:.1em; color:rgba(244,233,220,.45);">Picerija · palačinkarnica - Novi Sad</span>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;animateReveals&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Animacije&quot;},&quot;parallax&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Animacije&quot;},&quot;glowIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.5,&quot;min&quot;:0,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Peć&quot;}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+
+  componentDidMount() {
+    const qa = (s) => Array.from(document.querySelectorAll(s));
+    const q  = (s) => document.querySelector(s);
+
+    // --- preloader (baking pizza) ---
+    const pre = document.getElementById('preloader');
+    if (pre) {
+      const t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+      let hidden = false;
+      const hide = () => {
+        if (hidden) return; hidden = true;
+        pre.style.opacity = '0';
+        pre.style.visibility = 'hidden';
+        setTimeout(() => { pre.style.display = 'none'; }, 750);
+      };
+      const finish = () => {
+        const now = (window.performance && performance.now) ? performance.now() : Date.now();
+        setTimeout(hide, Math.max(0, 1150 - (now - t0))); // keep a graceful minimum
+      };
+      if (document.readyState === 'complete') finish();
+      else window.addEventListener('load', finish, { once: true });
+      setTimeout(hide, 5000); // safety net if load never fires
+    }
+    const animate = this.props.animateReveals !== false;
+    const doParallax = this.props.parallax !== false;
+    const glowBase = typeof this.props.glowIntensity === 'number' ? this.props.glowIntensity : 0.5;
+    const clamp01 = (v) => Math.max(0, Math.min(1, v));
+
+    // --- scroll reveals ---
+    const reveals = qa('[data-reveal]');
+    if (!animate || !('IntersectionObserver' in window)) {
+      reveals.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const el = e.target;
+            if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 'ms';
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            io.unobserve(el);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      reveals.forEach(el => io.observe(el));
+    }
+
+    // --- "priča" carousel: arrow-navigated, flip-from-below ---
+    const prica = q('#prica');
+    if (prica) {
+      const slides = Array.from(prica.querySelectorAll('[data-slide]'));
+      const counter = prica.querySelector('[data-counter]');
+      const prevBtn = prica.querySelector('[data-prev]');
+      const nextBtn = prica.querySelector('[data-next]');
+      const names = ['Testo', 'Pelat i sir', 'Prilozi', 'Domaća lepinja'];
+      const n = slides.length;
+      let cur = 0, busy = false;
+      if (slides[0]) slides[0].dataset.active = '1';
+
+      const go = (next, dir) => {
+        if (busy || next === cur || !slides[next]) return;
+        busy = true;
+        const out = slides[cur], inc = slides[next];
+        inc.style.zIndex = '2'; out.style.zIndex = '1';
+        // place incoming folded (below the fold), no transition, then unfold
+        inc.style.transition = 'none';
+        inc.style.opacity = '0';
+        inc.style.transform = 'rotateX(' + (dir > 0 ? -90 : 90) + 'deg)';
+        void inc.offsetWidth; // reflow
+        inc.style.transition = 'transform .75s cubic-bezier(.22,.61,.36,1), opacity .5s ease';
+        out.style.transition = 'transform .75s cubic-bezier(.22,.61,.36,1), opacity .5s ease';
+        inc.style.opacity = '1';
+        inc.style.transform = 'rotateX(0deg)';
+        inc.style.pointerEvents = 'auto';
+        out.style.opacity = '0';
+        out.style.transform = 'rotateX(' + (dir > 0 ? 90 : -90) + 'deg)';
+        out.style.pointerEvents = 'none';
+        out.removeAttribute('data-active');
+        inc.dataset.active = '1';
+        cur = next;
+        if (counter) counter.textContent = '0' + (cur + 1) + ' / 0' + n + ' - ' + names[cur];
+        setTimeout(() => { busy = false; }, 780);
+      };
+      if (nextBtn) nextBtn.addEventListener('click', () => go((cur + 1) % n, 1));
+      if (prevBtn) prevBtn.addEventListener('click', () => go((cur - 1 + n) % n, -1));
+      window.addEventListener('keydown', (e) => {
+        const r = prica.getBoundingClientRect();
+        const inView = r.top < window.innerHeight * 0.5 && r.bottom > window.innerHeight * 0.5;
+        if (!inView) return;
+        if (e.key === 'ArrowRight') go((cur + 1) % n, 1);
+        else if (e.key === 'ArrowLeft') go((cur - 1 + n) % n, -1);
+      });
+    }
+
+    // --- sticky scroll sequences (baking) ---
+    const tracks = qa('[data-seq-track]').map(el => ({
+      el,
+      frames: Array.from(el.querySelectorAll('[data-frame]')),
+      lines:  Array.from(el.querySelectorAll('[data-line]')),
+      glow:   el.querySelector('[data-glow]'),
+    }));
+
+    const nav = q('#nav');
+    const navTexts = qa('[data-nav-text]');
+    const navLogo = q('[data-nav-logo]');
+    const darkSecs = [q('#pecenje'), q('#kontakt')].filter(Boolean);
+    const parEls = doParallax ? qa('[data-parallax]') : [];
+
+    // --- baking image sequence (scroll-scrubbed, 151 frames) ---
+    const bake = q('#pecenje');
+    const FRAME_COUNT = 151;
+    // piecewise pacing: [scrollStart, scrollEnd, frameStart, frameEnd]
+    const bakeSegs = [
+      [0.00, 0.20,   1,  20],  // raw, very slow
+      [0.20, 0.35,  20,  45],  // dough rises, subtle
+      [0.35, 0.55,  45,  80],  // baking noticeable
+      [0.55, 0.73,  80, 115],  // accelerates
+      [0.73, 0.86, 115, 140],  // browning slows
+      [0.86, 1.00, 140, 151],  // hold on finished
+    ];
+    const frameForP = (p) => {
+      for (let i = 0; i < bakeSegs.length; i++) {
+        const s = bakeSegs[i];
+        if (p <= s[1] || i === bakeSegs.length - 1) {
+          const t = clamp01((p - s[0]) / (s[1] - s[0]));
+          return Math.round(s[2] + t * (s[3] - s[2]));
+        }
+      }
+      return 1;
+    };
+    let bakeImg = null, bakeLines = [], bakeTimer = null, bakeGlow = null, bakeHalo = null, lastFrame = -1;
+    const bakeFrames = [];
+    if (bake) {
+      bakeImg = bake.querySelector('[data-bake-img]');
+      bakeLines = Array.from(bake.querySelectorAll('[data-line]'));
+      bakeTimer = bake.querySelector('[data-bake-timer]');
+      bakeGlow = bake.querySelector('[data-glow]');
+      bakeHalo = bake.querySelector('[data-bake-halo]');
+      for (let i = 1; i <= FRAME_COUNT; i++) {
+        const im = new Image();
+        im.src = 'assets/framesb/frame-' + String(i).padStart(3, '0') + '.jpg';
+        bakeFrames[i] = im;
+      }
+    }
+    const updateBake = () => {
+      if (!bake || !bakeImg) return;
+      const r = bake.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      const p = clamp01(total > 0 ? (-r.top) / total : 0);
+      const f = frameForP(p);
+      if (f !== lastFrame) {
+        lastFrame = f;
+        const im = bakeFrames[f];
+        if (im) bakeImg.src = im.src;
+        // rani frejmovi (pica sedi malo nize) — pomeri fotografiju blago navise, glatko do ~frejma 24
+        // blag zum na ranim frejmovima, gotovo neprimetan, glatko do frejma ~24
+        const k = clamp01((f - 1) / 23);
+        const sc = 1.14 - k * 0.04; // 1.14 -> 1.10 (blago)
+        bakeImg.style.transform = 'scale(' + sc.toFixed(3) + ')';
+        bakeImg.style.objectPosition = 'center 50%';
+      }
+      const phase = Math.min(bakeLines.length - 1, Math.floor(p * bakeLines.length));
+      bakeLines.forEach((l, i) => {
+        l.style.opacity = i === phase ? '1' : '0';
+        l.style.transform = i === phase ? 'translateY(0)' : 'translateY(14px)';
+      });
+      if (bakeTimer) {
+        const secs = Math.round(p * 60);
+        const temp = Math.round(320 + p * 165); // 320 -> 485°C
+        const se = bakeTimer.querySelector('[data-secs]');
+        const te = bakeTimer.querySelector('[data-temp]');
+        if (se) se.innerHTML = secs + '<span style="font-size:.34em; letter-spacing:.04em;"> s</span>';
+        if (te) te.textContent = temp + '°C';
+      }
+      if (bakeGlow) bakeGlow.style.opacity = (glowBase * 0.55 + p * 0.55).toFixed(2);
+      if (bakeHalo) {
+        // glow behind the pizza intensifies with temperature
+        bakeHalo.style.opacity = (0.34 + p * 0.62).toFixed(2);
+        bakeHalo.style.transform = 'translate(-50%,-50%) scale(' + (0.9 + p * 0.28).toFixed(3) + ')';
+      }
+    };
+
+    // ---- priprema: sticky sekvenca (cross-fade, bez tekstova) ----
+    const prep = document.querySelector('[data-prep]');
+    const prepFrames = prep ? Array.from(prep.querySelectorAll('[data-prep-frame]')) : [];
+    const prepCap = prep ? prep.querySelector('[data-prep-cap]') : null;
+    const prepCaps = ['Sveže isečena', 'Pakuje se, još topla'];
+    let lastPrep = -1;
+    const updatePacking = () => {
+      if (!prep || !prepFrames.length) return;
+      const r = prep.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      const p = clamp01(total > 0 ? (-r.top) / total : 0);
+      const active = Math.min(prepFrames.length - 1, Math.max(0, Math.floor(p * prepFrames.length)));
+      prepFrames.forEach((f, i) => {
+        f.style.opacity = i === active ? '1' : '0';
+        f.style.transform = i === active ? 'translateY(0) scale(1)' : 'translateY(-5%) scale(1.03)';
+      });
+      if (active !== lastPrep) {
+        lastPrep = active;
+        if (prepCap) {
+          prepCap.style.opacity = '0';
+          setTimeout(() => { prepCap.textContent = prepCaps[active] || ''; prepCap.style.opacity = '1'; }, 220);
+        }
+      }
+    };
+
+    // ---- ruta dostave ----
+    const dSec = document.querySelector('#dostava');
+    let rLine = null, rDot = null, rEnd = null, rLen = 0, rPath = null;
+    if (dSec) {
+      rLine = dSec.querySelector('[data-route-line]');
+      rDot  = dSec.querySelector('[data-route-dot]');
+      var rBox = dSec.querySelector('[data-box-inner]');
+      rEnd  = dSec.querySelector('[data-route-end]');
+      rPath = dSec.querySelector('[data-route-base]');
+      if (rPath) { rLen = rPath.getTotalLength(); }
+      if (rLine) { rLine.style.strokeDasharray = rLen; rLine.style.strokeDashoffset = rLen; }
+    }
+    const wrap = dSec ? dSec.querySelector('[data-route-wrap]') : null;
+    let boxLanded = false;
+    const updateDelivery = () => {
+      if (!dSec || !rPath || !wrap) return;
+      const r = dSec.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // napreduje dok je sekcija zakačena (sticky) — 0→1 kroz ceo scroll
+      const total = r.height - vh;
+      let raw = clamp01(total > 0 ? (-r.top) / total : 0);
+      // stranica krece nadole tek kad kutija stigne do vrata (kraj pina)
+      let p = clamp01(raw / 0.97);
+      if (rLine) rLine.style.strokeDashoffset = (rLen * (1 - p)).toFixed(1);
+      if (rDot) {
+        const bw = wrap.clientWidth, bh = wrap.clientHeight;
+        const pt = rPath.getPointAtLength(rLen * p);
+        rDot.style.transform = 'translate(' + (pt.x / 1080 * bw).toFixed(1) + 'px,' + (pt.y / 300 * bh).toFixed(1) + 'px)';
+        rDot.style.opacity = p > 0.005 && p < 0.999 ? '1' : '0';
+        if (rBox) {
+          // pravac putanje u ekranskom prostoru (preserveAspectRatio=none)
+          const e = Math.max(1, rLen * 0.01);
+          const a = rPath.getPointAtLength(Math.max(0, rLen * p - e));
+          const b = rPath.getPointAtLength(Math.min(rLen, rLen * p + e));
+          const dx = (b.x - a.x) / 1080 * bw, dy = (b.y - a.y) / 300 * bh;
+          let deg = Math.atan2(dy, dx) * 180 / Math.PI;
+          deg = Math.max(-14, Math.min(14, deg * 0.5)); // blago, uspravno
+          const sc = 1 + 0.1 * Math.sin(Math.PI * clamp01(p)); // malo veće na sredini
+          rBox.style.transform = 'translate(-50%,-60%) rotate(' + deg.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+          // meko slecanje na kraju
+          if (p > 0.992) {
+            if (!boxLanded) { boxLanded = true; rBox.style.animation = 'none'; void rBox.offsetWidth; rBox.style.animation = 'fokaBoxLand .62s cubic-bezier(.34,1.56,.64,1) both'; }
+          } else if (p < 0.97 && boxLanded) {
+            boxLanded = false; rBox.style.animation = 'none';
+          }
+        }
+      }
+      if (rEnd) rEnd.style.opacity = p > 0.985 ? '1' : '0.4';
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+
+        if (nav) {
+          const navH = 62;
+          const overDark = darkSecs.some(s => { const r = s.getBoundingClientRect(); return r.top < navH && r.bottom > 0; });
+          const on = window.scrollY > 50;
+          if (overDark) {
+            nav.style.background = 'rgba(20,16,13,0)';
+            nav.style.borderBottomColor = 'rgba(244,233,220,0)';
+            navTexts.forEach(t => t.style.color = '#f4e9dc');
+            if (navLogo) navLogo.style.filter = 'invert(1) brightness(1.9)';
+          } else {
+            nav.style.background = on ? 'rgba(250,247,242,0.85)' : 'rgba(250,247,242,0)';
+            nav.style.borderBottomColor = on ? 'rgba(43,39,36,0.08)' : 'rgba(43,39,36,0)';
+            navTexts.forEach(t => t.style.color = '#2b2724');
+            if (navLogo) navLogo.style.filter = 'none';
+          }
+          // sakrij nav dok je sekcija sastavljanja pice u fokusu (da ne prekriva picu)
+          const asm = document.querySelector('#sklapanje');
+          if (asm) {
+            const ar = asm.getBoundingClientRect();
+            const cover = ar.top < navH && ar.bottom > navH * 1.5;
+            nav.style.transform = cover ? 'translateY(-110%)' : 'translateY(0)';
+            nav.style.pointerEvents = cover ? 'none' : '';
+          }
+        }
+
+        for (const el of parEls) {
+          const r = el.getBoundingClientRect();
+          const c = (r.top + r.height / 2) - window.innerHeight / 2;
+          const sp = parseFloat(el.dataset.parallax) || 0.05;
+          el.style.transform = 'translateY(' + (-c * sp).toFixed(1) + 'px)';
+        }
+
+        for (const t of tracks) {
+          const N = t.frames.length;
+          if (!N) continue;
+          const r = t.el.getBoundingClientRect();
+          const total = r.height - window.innerHeight;
+          const p = clamp01(total > 0 ? (-r.top) / total : 0);
+          const active = Math.min(N - 1, Math.max(0, Math.floor(p * N)));
+          t.frames.forEach((f, i) => {
+            f.style.opacity = i === active ? '1' : '0';
+            f.style.transform = i === active ? 'scale(1)' : 'scale(1.04)';
+          });
+          t.lines.forEach((l, i) => {
+            l.style.opacity = i === active ? '1' : '0';
+            l.style.transform = i === active ? 'translateY(0)' : 'translateY(14px)';
+          });
+          if (t.glow) t.glow.style.opacity = (glowBase * 0.7 + p * 0.5).toFixed(2);
+        }
+        updateBake();
+        updateDelivery();
+        updatePacking();
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+    this._onScroll = onScroll;
+
+    this._initAssembly();
+  }
+
+  _initAssembly() {
+    const sec = document.querySelector('#sklapanje');
+    if (!sec) return;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const pizza = sec.querySelector('[data-pc-img]');
+    const cta = sec.querySelector('[data-pc-cta]');
+    const hint = sec.querySelector('[data-pc-hint]');
+    const cards = Array.from(sec.querySelectorAll('.pc-card'));
+    const bake = document.querySelector('#pecenje');
+
+    // preload the 5 cumulative pizza images so switching is instant
+    const stepSrc = [];
+    for (let i = 0; i <= 4; i++) {
+      const src = 'assets/pizza/step-' + i + '.png';
+      stepSrc[i] = src;
+      const im = new Image();
+      im.src = src;
+    }
+
+    const hints = [
+      'Dodaj sastojke redom. Testo se puni pred tobom.',
+      'Lepo. Sada šunka.',
+      'Idu pečurke.',
+      'Još samo masline.',
+      'Gotovo. Ubaci je u pećnicu.'
+    ];
+
+    let step = 0;          // ingredients placed so far (0..4)
+    let complete = false;
+
+    const enableCta = () => {
+      complete = true;
+      cta.style.opacity = '1';
+      cta.style.transform = 'translateY(0)';
+      cta.style.cursor = 'pointer';
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const s = parseInt(card.dataset.step, 10);   // 1..4
+        if (card.dataset.done === '1' || card.dataset.future === '1' || s !== step + 1) return;
+
+        // instant image swap — same frame, no transition (image is preloaded)
+        pizza.src = stepSrc[s];
+
+        // mark this card done, reveal the next
+        card.removeAttribute('data-future');
+        card.dataset.done = '1';
+        step = s;
+        const next = cards[step];        // next card in DOM order
+        if (next) next.removeAttribute('data-future');
+        if (hint) hint.textContent = hints[step];
+        if (step >= cards.length) enableCta();
+      });
+    });
+
+    cta.addEventListener('click', () => {
+      if (!complete || !bake) return;
+      window.scrollTo({ top: bake.offsetTop, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  }
+
+  componentWillUnmount() {
+    if (this._onScroll) {
+      window.removeEventListener('scroll', this._onScroll);
+      window.removeEventListener('resize', this._onScroll);
+    }
+  }
+}
+</script>
+</body>
+</html>
